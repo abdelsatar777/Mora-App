@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mora_app/pages/splash_page.dart';
+import 'core/utils/device_utils.dart';
 
 void main() {
   runApp(MoraApp());
@@ -9,20 +12,21 @@ class MoraApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SplashPage());
-  }
-}
-
-class SplashPage extends StatefulWidget {
-  const SplashPage({super.key});
-
-  @override
-  _SplashPageState createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
+    return ScreenUtilInit(
+      designSize:
+          DeviceUtils.isTablet(context) ? Size(800, 1280) : Size(440, 956),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: 'Funnel Display',
+            scaffoldBackgroundColor: Colors.white,
+          ),
+          home: SplashPage(),
+        );
+      },
+    );
   }
 }
