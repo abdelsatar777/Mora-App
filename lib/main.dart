@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mora_app/pages/splash_page.dart';
+import 'package:mora_app/pages/home_page_wrapper.dart';
 import 'core/utils/device_utils.dart';
 
 void main() {
@@ -24,7 +24,7 @@ class MoraApp extends StatelessWidget {
             fontFamily: 'Funnel Display',
             scaffoldBackgroundColor: Colors.white,
           ),
-          home: SplashPage(),
+          home: HomePageWrapper(),
         );
       },
     );

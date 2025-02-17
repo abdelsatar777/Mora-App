@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_app_bar.dart';
-import '../widgets/calendar_map.dart';
-import '../widgets/calendar_view_selector.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -23,17 +21,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Calendar'),
-      body: Column(
-        children: [
-          CalendarViewSelector(
-            currentView: currentView,
-            onViewChange: changeView,
-          ),
-          Expanded(
-            child: CalendarMap(view: currentView),
-          ),
-        ],
-      ),
+
     );
   }
 }

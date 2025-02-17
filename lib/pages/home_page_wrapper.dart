@@ -6,6 +6,8 @@ import '../presentation/screens/calendar_screen.dart';
 import '../presentation/screens/home_screen.dart';
 import '../presentation/screens/projects_screen.dart';
 import '../presentation/screens/setting_screen.dart';
+import '../presentation/widgets/add_folder_bottom_sheet.dart';
+import '../presentation/widgets/add_task_bottom_sheet.dart';
 
 class HomePageWrapper extends StatefulWidget {
   const HomePageWrapper({super.key});
@@ -15,6 +17,7 @@ class HomePageWrapper extends StatefulWidget {
 }
 
 class _HomePageWrapperState extends State<HomePageWrapper> {
+  final GlobalKey _fabKey = GlobalKey(); // مفتاح لتعقب موقع الزر
   late bool isTablet; // Variable to store device type
 
   @override
@@ -26,10 +29,10 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-     HomeScreen(),
-     CalendarScreen(),
-     ProjectsScreen(),
-     SettingScreen(),
+    HomeScreen(),
+    CalendarScreen(),
+    ProjectsScreen(),
+    SettingScreen(),
   ];
 
   @override
@@ -46,6 +49,9 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
                 _currentIndex = index;
               });
             },
+            iconSize: isTablet ? 34.r : 22.r,
+            selectedFontSize: isTablet ? 20.sp : 16.sp,
+            unselectedFontSize: isTablet ? 18.sp : 14.sp,
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
             selectedItemColor: AppColors.primary,
@@ -64,15 +70,84 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
               width: isTablet ? 55.w : 47.w,
               height: isTablet ? 55.w : 47.h,
               child: FloatingActionButton(
-                onPressed: () {},
+                key: _fabKey,
+                // تعيين المفتاح هنا
+                onPressed: () {
+                  final RenderBox renderBox =
+                      _fabKey.currentContext!.findRenderObject() as RenderBox;
+                  final Offset offset = renderBox.localToGlobal(Offset.zero);
+
+                  showMenu(
+                    context: context,
+                    position: RelativeRect.fromLTRB(offset.dx, offset.dy - 115,
+                        offset.dx - (isTablet ? 70 : 30), offset.dy),
+                    items: [
+                      PopupMenuItem(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: EdgeInsets.all(12.r),
+                                  child: AddFolderBottomSheet(),
+                                );
+                              });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Folder",
+                              style: TextStyle(
+                                fontSize: isTablet ? 22.sp : 18.sp,
+                              ),
+                            ),
+                            Icon(
+                              Icons.folder,
+                              size: isTablet ? 25.sp : 22.sp,
+                            ),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: EdgeInsets.all(12.r),
+                                  child: AddTaskBottomSheet(),
+                                );
+                              });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Task",
+                              style: TextStyle(
+                                fontSize: isTablet ? 22.sp : 18.sp,
+                              ),
+                            ),
+                            Icon(
+                              Icons.task,
+                              size: isTablet ? 25.sp : 22.sp,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
                 backgroundColor: AppColors.primary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)),
+                  borderRadius: BorderRadius.circular(50),
+                ),
                 child: Icon(
                   Icons.add,
                   color: Colors.white,
-                  size: isTablet ? 37.r : 27.r,
+                  size: isTablet ? 38.r : 27.r,
                 ),
               ),
             ),
@@ -85,7 +160,10 @@ class _HomePageWrapperState extends State<HomePageWrapper> {
   BottomNavigationBarItem _buildBottomNavItem(
       IconData icon, String label, int index) {
     return BottomNavigationBarItem(
-      icon: Icon(icon),
+      icon: Icon(
+        icon,
+        // size: isTablet ? 32.r : 20.r,
+      ),
       label: label,
     );
   }

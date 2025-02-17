@@ -7,6 +7,8 @@ import 'package:mora_app/presentation/widgets/custom_app_bar.dart';
 import '../../core/utils/device_utils.dart';
 
 class SettingScreen extends StatefulWidget {
+  const SettingScreen({super.key});
+
   @override
   _SettingScreenState createState() => _SettingScreenState();
 }
